@@ -90,4 +90,42 @@ def compute_loss(self, model, inputs, classifier=None, model_extra=None, return_
             loss_debias = -torch.sum(debias_label.unsqueeze(-1) * log_logits, 1)
             loss_debias = loss_debias.mean()
              
+    # forth: introduire a diff_ave to increase the influence of mnli train data
+def compute_loss(self, model, inputs, classifier=None, model_extra=None, return_outputs=False):
+        """
+        How the loss is computed by Trainer_self. By default, all models return the loss in the first element.
+
+        Subclass and override for custom behavior.
+        """
+        loss_pred = 0.
+        loss_sim = None
+        loss_debias = None
+
+        diff_ave = 0.47297789359788456 - 0.3552240478360837
+        #diff_ave = 0.6682674726384413 - 0.48239152584400735
+        if self.label_smoother is not None and "labels" in inputs:
+            labels = inputs.pop("labels")
+        else:
+            labels = None
+        if "overlap" in inputs:
+            overlap = inputs.pop("overlap")
+            overlap_target = 0.5 * torch.ones_like(overlap)
+        else:
+            overlap = None
+            
+        if model.config.problem_type == "overlap":
+            labels = inputs.pop("labels")
+            smoother_labels = F.one_hot(labels, num_classes=model.config.num_labels).float()
+            #smoother_labes = torch.zeros_like(laels)
+            for index in range(len(smoother_labels)):
+                if smoother_labels[index,1] == 1:
+                    smoothing = self.state.epoch / self.num_train_epochs
+                    overlap_weight = max(overlap[index], 0.5 + diff_ave)
+                    smoother_labels[index] += smoothing * 0.5 * overlap_weight
+                    smoother_labels[index,1] -= 2 * smoothing * 0.5 * overlap_weight
+            outputs = model(**inputs,labels=smoother_labels)
+        else:
+            outputs = model(**inputs)
+        
+   ## we back to smoother 2 and change the evaluation metric from .max() to .sum(), which is still noted as smoother 2 since it's the same for paws
 
