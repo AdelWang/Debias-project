@@ -129,5 +129,5 @@ def compute_loss(self, model, inputs, classifier=None, model_extra=None, return_
         
    ## we back to smoother 2 and change the evaluation metric from .max() to .sum(), which is still noted as smoother 2 since it's the same for paws
 
-## smoothing denote the smoothing mechanism with smoothing = min((self.epoch + 1) / self.num_train_epochs),1)
+## smoothing denote the smoothing mechanism with smoothing = min((self.epoch + 1) / self.num_train_epochs),1), which is denoted as smoothing 5
 
