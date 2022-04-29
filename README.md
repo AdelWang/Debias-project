@@ -22,7 +22,7 @@ python run_glue_self.py \
     --validation_file ./data/mnli/dev_matched_overlap.csv \
     --learning_rate 2e-5 \
     --output_dir ./CL/ \
-    ## use "--use_classifier_pred False" to enable the Adv training
+    ## use "--use_classifier_pred False" to disable the Adv training
     '''
     --learning_rate_classifier 5e-4 \ 
     --weight_mse 2 \
