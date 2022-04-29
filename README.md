@@ -12,7 +12,7 @@ lemme是指调用NLTK中的lemmenizer将一些词的变位还原，如 apples --
 
 ```
 python run_glue_self.py \
-	--num_train_epochs 3 \
+    --num_train_epochs 3 \
     --max_seq_length 128 \
     --per_device_train_batch_size 32 \
     --do_train \
