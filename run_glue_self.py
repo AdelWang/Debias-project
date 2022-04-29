@@ -300,9 +300,9 @@ class classifier_pred(nn.Module):
     def forward(self, input_hidden_states, y=None, loss_fn=nn.MSELoss(reduction='mean')):
         if y is not None:
             y = y.reshape(-1,1)
-        feature = input_hidden_states
-        #last_hidden = input_hidden_states[-1]
-        #feature = torch.mean(last_hidden,axis= 1)
+        #feature = input_hidden_states
+        last_hidden = input_hidden_states[-1]
+        feature = torch.mean(last_hidden,axis= 1)
         h_hidden = self.fc_pred_hidden_1(self.dropouts(feature))
         pred_hidden = self.activation_hidden(h_hidden)
         h_hidden = self.fc_pred_hidden_2(self.dropouts(pred_hidden))
