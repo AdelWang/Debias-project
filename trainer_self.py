@@ -2436,8 +2436,8 @@ class Trainer_self:
         if self.use_attention:
             cls_output = self.compute_loss_pred(outputs.attentions, overlap,classifier=classifier,return_outputs=return_outputs)
         else:
-            #cls_output = self.compute_loss_pred(outputs.hidden_states, overlap,classifier=classifier,return_outputs=return_outputs)
-            cls_output = self.compute_loss_pred(outputs.pooler_output, overlap,classifier=classifier,return_outputs=return_outputs)
+            cls_output = self.compute_loss_pred(outputs.hidden_states, overlap,classifier=classifier,return_outputs=return_outputs)
+            #cls_output = self.compute_loss_pred(outputs.pooler_output, overlap,classifier=classifier,return_outputs=return_outputs)
             
         return cls_output
 
